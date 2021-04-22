@@ -60,6 +60,10 @@ namespace Strassen3x3
                 a[1, 1].Plus(a[1, 2]).Plus(a[1, 3]).Minus(a[2, 1]).Minus(a[2, 2]).Minus(a[3, 2]).Minus(a[3, 3]),
                 b[3, 3]);
             // ...
+            m[4] = Multiplicate(
+                a[1, 1].Minus().Plus(a[2, 1]).Plus(a[2, 2]),
+                b[1, 1].Minus(b[1, 2]).Plus(b[2, 2]));
+            // ...
             m[23] = Multiplicate(a[3, 3], b[3, 3]);
 
             return m;
