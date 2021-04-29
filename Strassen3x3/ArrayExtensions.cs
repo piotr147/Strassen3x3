@@ -90,8 +90,13 @@ namespace Strassen3x3
             Console.Write($"{NSpaces(width - FindNumberOfDigits(n))}");
         }
 
-        private static int FindNumberOfDigits(int n) =>
-            (int)Math.Ceiling(Math.Log(n, 10)) + (n < 0 ? 1 : 0);
+        private static int FindNumberOfDigits(int n)
+        {
+            if (n == 0)
+                return 1;
+
+            return (int)Math.Ceiling(Math.Log(Math.Abs(n), 10)) + (n < 0 ? 1 : 0);
+        }
 
         private static string NSpaces(int n)
         {

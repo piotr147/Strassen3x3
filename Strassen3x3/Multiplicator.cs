@@ -1,8 +1,68 @@
-﻿namespace Strassen3x3
+﻿using System;
+
+namespace Strassen3x3
 {
     public static class Multiplicator
     {
         public static int[,] Multiplicate(int[,] A, int[,] B)
+        {
+            int[,] correctSizeA = CorrectSizeOfMatrix(A);
+            int[,] correctSizeB = CorrectSizeOfMatrix(B);
+
+            int[,] result = MultiplicateWithCorrectSizes(correctSizeA, correctSizeB);
+
+            return PreparePreviousSize(result, A.GetLength(0));
+        }
+
+        private static int[,] PreparePreviousSize(int[,] m, int size)
+        {
+            if (m.GetLength(0) == size)
+                return m;
+
+            int[,] result = new int[size, size];
+
+            for (int i = 0; i < size; ++i)
+            {
+                for (int j = 0; j < size; ++j)
+                {
+                    result[i, j] = m[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        private static int[,] CorrectSizeOfMatrix(int[,] m)
+        {
+            int size = m.GetLength(0);
+            int wantedSize = 1;
+
+            while (wantedSize < size)
+            {
+                wantedSize *= 3;
+            }
+
+            return wantedSize == size
+                ? m
+                : AppendZerosToHaveDesiredSize(m, wantedSize);
+        }
+
+        private static int[,] AppendZerosToHaveDesiredSize(int[,] m, int wantedSize)
+        {
+            int[,] result = new int[wantedSize, wantedSize];
+
+            for (int i = 0; i < m.GetLength(0); ++i)
+            {
+                for (int j = 0; j < m.GetLength(1); ++j)
+                {
+                    result[i, j] = m[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        private static int[,] MultiplicateWithCorrectSizes(int[,] A, int[,] B)
         {
             if (A.Length == 1)
                 return new int[1, 1] { { A[0, 0] * B[0, 0] } };
@@ -157,30 +217,5 @@
 
             return result;
         }
-
-        //private static void CheckArguments(int[,] a, int[,] b)
-        //{
-        //    if (a.GetLength(0) != a.GetLength(1)
-        //        || b.GetLength(0) != b.GetLength(1))
-        //        throw new ArgumentException("Matrices must be square");
-
-        //    if(a.GetLength(0) != b.GetLength(0))
-        //        throw new ArgumentException("Matrices must have equal size");
-
-        //    if (!IsPowerOfThree(a.GetLength(0)))
-        //        throw new ArgumentException("Matrices length must be power of three");
-        //}
-
-        //private static bool IsPowerOfThree(int n)
-        //{
-        //    int pow = 1;
-        //    while(pow <= n)
-        //    {
-        //        if (pow == n)
-        //            return true;
-        //    }
-
-        //    return false;
-        //}
     }
 }
