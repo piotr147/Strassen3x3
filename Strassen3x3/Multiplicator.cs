@@ -6,35 +6,22 @@ namespace Strassen3x3
     {
         public static int[,] Multiplicate(int[,] A, int[,] B)
         {
-            int[,] correctSizeA = CorrectSizeOfMatrix(A);
-            int[,] correctSizeB = CorrectSizeOfMatrix(B);
+            int wantedSize = FindWantedSize(A, B);
+            int[,] correctSizeA = AppendZerosToHaveDesiredSize(A, wantedSize);
+            int[,] correctSizeB = AppendZerosToHaveDesiredSize(B, wantedSize);
 
             int[,] result = MultiplicateWithCorrectSizes(correctSizeA, correctSizeB);
 
-            return PreparePreviousSize(result, A.GetLength(0));
+            return PreparePreviousSize(result, A.GetLength(0), B.GetLength(1));
         }
 
-        private static int[,] PreparePreviousSize(int[,] m, int size)
+        private static int FindWantedSize(int[,] a, int[,] b)
         {
-            if (m.GetLength(0) == size)
-                return m;
+            int size = a.GetLength(0);
+            size = size < a.GetLength(1) ? a.GetLength(1) : size;
+            size = size < b.GetLength(0) ? b.GetLength(0) : size;
+            size = size < b.GetLength(1) ? b.GetLength(1) : size;
 
-            int[,] result = new int[size, size];
-
-            for (int i = 0; i < size; ++i)
-            {
-                for (int j = 0; j < size; ++j)
-                {
-                    result[i, j] = m[i, j];
-                }
-            }
-
-            return result;
-        }
-
-        private static int[,] CorrectSizeOfMatrix(int[,] m)
-        {
-            int size = m.GetLength(0);
             int wantedSize = 1;
 
             while (wantedSize < size)
@@ -42,9 +29,25 @@ namespace Strassen3x3
                 wantedSize *= 3;
             }
 
-            return wantedSize == size
-                ? m
-                : AppendZerosToHaveDesiredSize(m, wantedSize);
+            return wantedSize;
+        }
+
+        private static int[,] PreparePreviousSize(int[,] m, int size1, int size2)
+        {
+            if (m.GetLength(0) == size1 && m.GetLength(1) == size2)
+                return m;
+
+            int[,] result = new int[size1, size2];
+
+            for (int i = 0; i < size1; ++i)
+            {
+                for (int j = 0; j < size2; ++j)
+                {
+                    result[i, j] = m[i, j];
+                }
+            }
+
+            return result;
         }
 
         private static int[,] AppendZerosToHaveDesiredSize(int[,] m, int wantedSize)

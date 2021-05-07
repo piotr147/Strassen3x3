@@ -87,12 +87,12 @@ namespace Strassen3x3
         private static void PrintOnCertainWidth(int n, int width)
         {
             Console.Write($"{n}");
-            Console.Write($"{NSpaces(width - FindNumberOfDigits(n))}");
+            Console.Write($"{NSpaces(width - FindNumberOfDigits(n) + 1)}");
         }
 
         private static int FindNumberOfDigits(int n)
         {
-            if (n == 0)
+            if (n == 0 || n == 1)
                 return 1;
 
             return (int)Math.Ceiling(Math.Log(Math.Abs(n), 10)) + (n < 0 ? 1 : 0);

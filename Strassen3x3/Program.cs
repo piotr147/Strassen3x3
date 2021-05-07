@@ -10,13 +10,31 @@ namespace Strassen3x3
             {
                 { 1, 1 },
                 { 1, 1 },
+                { 1, 1 },
             };
 
             int[,] B = new int[,]
             {
-                { 2, 2 },
-                { 2, 2 },
+                { 2, 2, 2, 2 },
+                { 2, 2, 2, 2 },
             };
+
+
+
+
+
+
+            //int[,] A = new int[,]
+            //{
+            //    { 1, 1 },
+            //    { 1, 1 },
+            //};
+
+            //int[,] B = new int[,]
+            //{
+            //    { 2, 2 },
+            //    { 2, 2 },
+            //};
 
 
             //int[,] A = new int[,]
@@ -72,10 +90,21 @@ namespace Strassen3x3
             //                { 2, 2, 2, 2, 2, 2, 2, 2, 2 },
             //            };
 
+            Console.WriteLine("Matrices:");
+            Console.WriteLine();
+            A.Print();
+            Console.WriteLine();
+            B.Print();
+
+
 
             int[,] C = Multiplicator.Multiplicate(A, B);
 
+            Console.WriteLine();
+            Console.WriteLine("Result:");
+            Console.WriteLine();
             C.Print();
+            Console.WriteLine();
 
             Console.ReadKey();
         }
