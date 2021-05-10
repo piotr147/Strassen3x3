@@ -1,28 +1,35 @@
-﻿using System;
+﻿using CommandLine;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Strassen3x3
 {
     class Program
     {
-        static void Main(string[] args)
+        private const string DEFAULT_MATRIX1_PATRH = "./Matrix1.txt";
+        private const string DEFAULT_MATRIX2_PATRH = "./Matrix2.txt";
+        private static CmdOptions _options;
+
+        static async Task Main(string[] args)
         {
-            int[,] A = new int[,]
-            {
-                { 1, 1 },
-                { 1, 1 },
-                { 1, 1 },
-            };
+            ReadArgs(args);
 
-            int[,] B = new int[,]
-            {
-                { 2, 2, 2, 2 },
-                { 2, 2, 2, 2 },
-            };
+            int[,] A = await FileHelper.ReadFile(string.IsNullOrWhiteSpace(_options.Matrix1) ? DEFAULT_MATRIX1_PATRH : _options.Matrix1);
+            int[,] B = await FileHelper.ReadFile(string.IsNullOrWhiteSpace(_options.Matrix2) ? DEFAULT_MATRIX2_PATRH : _options.Matrix2);
 
+            //int[,] A = new int[,]
+            //{
+            //    { 1, 1 },
+            //    { 1, 1 },
+            //    { 1, 1 },
+            //};
 
-
-
-
+            //int[,] B = new int[,]
+            //{
+            //    { 2, 2, 2, 2 },
+            //    { 2, 2, 2, 2 },
+            //};
 
             //int[,] A = new int[,]
             //{
@@ -90,6 +97,9 @@ namespace Strassen3x3
             //                { 2, 2, 2, 2, 2, 2, 2, 2, 2 },
             //            };
 
+
+
+
             Console.WriteLine("Matrices:");
             Console.WriteLine();
             A.Print();
@@ -106,7 +116,16 @@ namespace Strassen3x3
             C.Print();
             Console.WriteLine();
 
+            await FileHelper.WriteOutput(C);
+
             Console.ReadKey();
         }
+
+        private static void ReadArgs(string[] args) =>
+            Parser.Default.ParseArguments<CmdOptions>(args)
+                   .WithParsed(o =>
+                   {
+                       _options = o;
+                   });
     }
 }
